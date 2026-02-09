@@ -1,0 +1,35 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        
+    App\:
+        resource: '../src/'
+        
+    App\Command\TestCommand:
+        arguments:
+            $apiClient: '@shop_api.v1.http.api_client'
+
+    Symfony\Component\HttpClient\Psr18Client:
+        arguments:
+            $client: '@http_client'
+    
+    Nyholm\Psr7\Factory\Psr17Factory: ~
+
+    shop_api.v1.http.api_config:
+        class: ShopApi\V1\Http\ApiConfig
+        arguments:
+            $apiUrl: '%env(SHOP_API_V1_URL)%'
+            $login: '%env(SHOP_API_V1_LOGIN)%'
+            $password: '%env(SHOP_API_V1_PASSWORD)%'
+
+    shop_api.v1.http.api_client:
+        class: ShopApi\V1\Http\ApiClient
+        arguments:
+            $apiConfig: '@shop_api.v1.http.api_config'
+            $client: '@Symfony\Component\HttpClient\Psr18Client'
+            $requestFactory: '@Nyholm\Psr7\Factory\Psr17Factory'
+    
+    # ShopApi\V1\ApiClient: '@shop_api.v1.api_client'
