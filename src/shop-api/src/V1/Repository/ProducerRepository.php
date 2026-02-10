@@ -11,15 +11,15 @@ final class ProducerRepository extends AbstractRepository
 
     public function createOne(Producer $producer): Producer
     {
-        $response = $this->apiClient->sendPostRequest(self::MAIN_URI, ProducerMapper::createRequestFromModel($producer));
+        $response = $this->apiClient->sendPostRequest(self::MAIN_URI, ProducerMapper::toApi($producer));
 
-        return ProducerMapper::singleFromApi($response);
+        return ProducerMapper::fromApi($response);
     }
 
     public function getAll(): array
     {
         $response = $this->apiClient->sendGetRequest(self::MAIN_URI);
 
-        return ProducerMapper::collectionFromApi($response);
+        return ProducerMapper::fromApiCollection($response);
     }
 }

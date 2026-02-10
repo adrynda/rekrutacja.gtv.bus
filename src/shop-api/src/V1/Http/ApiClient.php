@@ -4,7 +4,6 @@ namespace ShopApi\V1\Http;
 
 use Throwable;
 use Psr\Http\Client\ClientInterface;
-// use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use ShopApi\V1\Exception\ApiClientRequestException;
@@ -25,7 +24,8 @@ final class ApiClient
     public function sendGetRequest(string $uri, array $queryParams = []): array
     {
         if (!empty($queryParams)) {
-            $uri .= "?". http_build_query($queryParams);
+            $separator = str_contains($uri, '?') ? '&' : '?';
+            $uri .= $separator . http_build_query($queryParams);
         }
 
         $request = $this->createRequest('GET', $uri);
@@ -59,6 +59,7 @@ final class ApiClient
                     ),
                 ),
             )
+            // todo: do usunięcia
             ->withHeader(
                 'Host',
                 'rekrutacja.localhost',

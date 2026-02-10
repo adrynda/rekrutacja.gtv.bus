@@ -6,7 +6,7 @@ use ShopApi\V1\Model\Producer;
 
 final class ProducerMapper
 {
-    public static function collectionFromApi(array $list): array
+    public static function fromApiCollection(array $list): array
     {
         $collection = [];
 
@@ -17,7 +17,7 @@ final class ProducerMapper
         return $collection;
     }
 
-    public static function singleFromApi(array $item): Producer
+    public static function fromApi(array $item): Producer
     {
         return new Producer(
             id: $item['id'],
@@ -29,9 +29,8 @@ final class ProducerMapper
         );
     }
     
-    public static function createRequestFromModel(Producer $producer): array
+    public static function toApi(Producer $producer): array
     {
-        // todo: walidacja ???
         return [
             'producer' => [
                 'id' => $producer->id,
