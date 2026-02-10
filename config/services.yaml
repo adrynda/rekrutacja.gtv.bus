@@ -8,7 +8,11 @@ services:
     App\:
         resource: '../src/'
         
-    App\Command\TestCommand:
+    App\Command\CreateOneProducerCommand:
+        arguments:
+            $apiClient: '@shop_api.v1.http.api_client'
+        
+    App\Command\GetAllProducersCommand:
         arguments:
             $apiClient: '@shop_api.v1.http.api_client'
 

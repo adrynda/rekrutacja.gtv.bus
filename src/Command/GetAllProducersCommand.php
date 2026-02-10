@@ -8,10 +8,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use ShopApi\V1\Http\ApiClient;
 use ShopApi\V1\Repository\ProducerRepository;
-use ShopApi\V1\Model\Producer;
 
-#[AsCommand(name: "sdk-test")]
-class TestCommand extends Command
+#[AsCommand(name: "shop-api:producers:get-all")]
+class GetAllProducersCommand extends Command
 {
     public function __construct(
         protected ApiClient $apiClient,
@@ -21,21 +20,11 @@ class TestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // $output->writeln("asdasd");
+        $output->writeln("Lista zapisanych producer'ów:");
 
         $producerRepository = new ProducerRepository($this->apiClient);
 
-        $producer = new Producer(
-            id: 5,
-            name: 'name',
-            siteUrl: 'site url',
-            logoFilename: 'logo filename',
-            ordering: 11,
-            sourceId: 'source id',
-        );
-
-        dd($producerRepository->createOne($producer), $this::class);
-        dd($producerRepository->getAll(), $this::class);
+        dump($producerRepository->getAll());
 
         return Command::SUCCESS;
     }

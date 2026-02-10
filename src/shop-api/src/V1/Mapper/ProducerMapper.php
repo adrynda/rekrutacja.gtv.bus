@@ -6,12 +6,16 @@ use ShopApi\V1\Model\Producer;
 
 final class ProducerMapper
 {
+
+    /**
+     * @return Producer[]
+     */
     public static function fromApiCollection(array $list): array
     {
         $collection = [];
 
         foreach ($list as $item) {
-            $collection[] = self::singleFromApi($item);
+            $collection[] = self::fromApi($item);
         }
         
         return $collection;

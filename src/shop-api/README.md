@@ -46,3 +46,74 @@ Dzięki temu moduł może zostać łatwo wyodrębniony do osobnego repozytorium 
 
 W celu wydzielenia SDK jako osobnego pakietu wystarczy przenieść katalog `src/shop-api` do osobnego repozytorium i dodać konfigurację `composer.json` z PSR-4 autoloadingiem.
 
+---
+
+## ⚙️ Użycie
+
+Paczka pozwala na operacje dodawania nowego oraz pobranie listy wcześniej dodanych producentów. Do skorzystania z "SDK" potrzebna jest konfiguracja
+
+### ShopApi\V1\Http\ApiConfig
+
+ - `$apiUrl` - domena API
+ - `$login` - login dostępu do API
+ - `$password` - hasło dostępu do API
+
+### ShopApi\V1\Http\ApiClient
+
+ - `$apiConfig` - `ShopApi\V1\Http\ApiConfig`
+ - `$client` - `Psr\Http\Client\ClientInterface`
+ - `$requestFactory` - `Psr\Http\Message\RequestFactoryInterface`
+
+### ShopApi\V1\Repository\ProducerRepository
+
+ - `$apiClient` - `ShopApi\V1\Http\ApiClient`
+ 
+ Repozytorium pozwala na wykonanie operacji:
+ - `createOne(Producer $producer)` - utwórz nowego producenta
+ - `public function getAll()` - pobierz listę producentó, zwraca `Producer[]`
+
+ ### ShopApi\V1\Model\Producer
+
+ - `$id`
+ - `$name`
+ - `$siteUrl`
+ - `$logoFilename`
+ - `$ordering`
+ - `$sourceId`
+
+ Jest obiektem reprezentującym producenta w API.
+
+### Przykładowe użycie
+
+```
+use ShopApi\V1\Http\ApiConfig;
+use ShopApi\V1\Http\ApiClient;
+use ShopApi\V1\Repository\ProducerRepository;
+
+...
+
+$apiConfig = new ApiConfig(/* odpowiednie dane */);
+$apiClient = new ApiClient($apiConfig, /* wybrane paczki */);
+$producerRepository = new ProducerRepository($apiClient);
+
+// pobranie listy producentó
+$list = $producerRepository->getAll();
+
+// dodanie nowego producenta
+$producer = new Producer(
+    id: 5,
+    name: 'name',
+    siteUrl: 'site url',
+    logoFilename: 'logo filename',
+    ordering: 11,
+    sourceId: 'source id',
+);
+$producerRepository->createOne($producer);
+```
+
+## 🚀 Rozbudowa
+
+Dodanie nowego zasobu (np. Category):
+1. Stwórz `Model/Category.php`
+2. Stwórz `Mapper/CategoryMapper.php`  
+3. Stwórz `Repository/CategoryRepository.php` extends `AbstractRepository`

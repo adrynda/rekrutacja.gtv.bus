@@ -16,6 +16,9 @@ final class ProducerRepository extends AbstractRepository
         return ProducerMapper::fromApi($response);
     }
 
+    /**
+     * @return Producer[]
+     */
     public function getAll(): array
     {
         $response = $this->apiClient->sendGetRequest(self::MAIN_URI);
