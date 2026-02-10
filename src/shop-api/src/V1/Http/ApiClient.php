@@ -59,11 +59,6 @@ final class ApiClient
                     ),
                 ),
             )
-            // todo: do usunięcia
-            ->withHeader(
-                'Host',
-                'rekrutacja.localhost',
-            )
         ;
     }
 
